@@ -61,6 +61,14 @@ const createServer = async (root = process.cwd()) => {
 
   applyAuthMiddleware(app);
 
+  let session = await Shopify.Utils.loadCurrentSession(req, res, false);
+
+  let result = await Shopify.rest.Product.all({
+    session: session,
+  });
+
+  console.log(result)
+
   // Incoming webhook requests
   app.post("/webhooks/:topic", async (req, res) => {
     const { topic } = req.params;
